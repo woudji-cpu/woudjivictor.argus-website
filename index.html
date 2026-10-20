@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#0A0F1A">
+  <title>ARGUS — Radar de Signaux Fonciers pour Marchands de Biens | Woudji Victor</title>
+  <meta name="description" content="ARGUS scanne 6 bases publiques françaises chaque nuit. Signaux de liquidation, décotes DVF, contraintes PLU — livrés sous 48h sur vos critères. SaaS B2B, forfaits fixes, zéro commission.">
+  <meta name="keywords" content="ARGUS, veille immobilière BODACC, marchand de biens sourcing, procédures collectives, DVF, intelligence foncière, radar immobilier, Seine-Saint-Denis, Île-de-France, SaaS immobilier">
+  <meta name="author" content="Woudji Victor">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="ARGUS — Le radar qui détecte les immeubles en liquidation avant vos concurrents">
+  <meta property="og:description" content="ARGUS scanne 6 bases publiques chaque nuit. Vous recevez les signaux de votre zone chaque matin. 100% légal, 0% commission.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:image" content="/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="/og-image.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230A0F1A'/><circle cx='50' cy='50' r='28' fill='none' stroke='%233B82F6' stroke-width='4'/><path d='M50 22v8M50 70v8M22 50h8M70 50h8' stroke='%233B82F6' stroke-width='4' stroke-linecap='round'/><circle cx='50' cy='50' r='5' fill='%233B82F6'/></svg>">
+  <script defer data-domain="woudjivictor.com" src="https://plausible.io/js/script.js"></script>
+
+<style>
+:root{
+  --bg-dark:#0A0F1A;--bg-darker:#060A12;--bg-light:#FAFBFC;--bg-section:#F1F5F9;
+  --accent:#2563EB;--accent-bright:#3B82F6;--accent-glow:rgba(37,99,235,.15);
+  --success:#10B981;--danger:#EF4444;--text-light:#E2E8F0;--text-muted:#94A3B8;
+  --text-dark:#1E293B;--text-dm:#64748B;--border:rgba(148,163,184,.15);
+  --border-d:rgba(30,41,59,.1);--radius:12px;--radius-lg:20px;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --tr:.3s cubic-bezier(.4,0,.2,1);--nav-h:64px;--trust-h:36px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + var(--trust-h) + 16px);-webkit-text-size-adjust:100%}
+body{font-family:var(--font);font-size:1rem;line-height:1.65;color:var(--text-dark);background:var(--bg-light);overflow-x:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:var(--accent);text-decoration:none}
+::selection{background:var(--accent);color:#fff}
+h1,h2,h3{font-weight:700;line-height:1.15;letter-spacing:-.02em;text-wrap:balance}
+h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:800}
+h2{font-size:clamp(1.8rem,4vw,2.8rem)}
+h3{font-size:clamp(1.1rem,2.5vw,1.45rem);font-weight:600}
+p{text-wrap:pretty}
+.lead{font-size:clamp(1.05rem,2vw,1.3rem);line-height:1.55}
+.text-gradient{background:linear-gradient(135deg,#60A5FA,#2563EB,#1D4ED8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.container{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,4vw,2.5rem)}
+section{padding:clamp(4rem,10vw,6.5rem) 0;position:relative}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);display:flex;align-items:center;background:rgba(10,15,26,.92);backdrop-filter:blur(12px) saturate(1.4);-webkit-backdrop-filter:blur(12px) saturate(1.4);border-bottom:1px solid var(--border)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:2rem;width:100%}
+.nav-logo{color:var(--text-light);font-weight:700;font-size:1rem;display:flex;align-items:center;gap:.5rem}
+.nav-logo svg{width:26px;height:26px}
+.nav-links{display:flex;gap:1.3rem;list-style:none}
+.nav-links a{color:var(--text-muted);font-size:.84rem;font-weight:500;transition:color .3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--accent);transition:width .3s var(--tr)}
+.nav-links a:hover{color:#fff}
+.nav-links a:hover::after{width:100%}
+.nav-cta{background:var(--accent);color:#fff!important;padding:.55rem 1.3rem;border-radius:8px;font-weight:600;font-size:.88rem;transition:background .3s,transform .2s;white-space:nowrap}
+.nav-cta:hover{background:#1D4ED8;transform:translateY(-1px)}
+
+/* TRUST BAR */
+.trust-bar{background:rgba(37,99,235,.06);border-bottom:1px solid rgba(37,99,235,.12);padding:.6rem 0;position:fixed;top:var(--nav-h);left:0;right:0;z-index:99;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.trust-inner{display:flex;align-items:center;justify-content:center;gap:.7rem;flex-wrap:wrap;font-size:.76rem;color:var(--text-muted)}
+.trust-item strong{color:#60A5FA}
+.trust-sep{color:rgba(148,163,184,.4)}
+@media(max-width:768px){.trust-bar{display:none}}
+
+/* HERO */
+.hero{min-height:100vh;min-height:100svh;display:grid;place-items:center;background:var(--bg-dark);position:relative;overflow:hidden;padding:calc(var(--nav-h) + var(--trust-h) + 3rem) 0 4rem}
+.hero::before{content:'';position:absolute;inset:-20%;background-image:linear-gradient(rgba(37,99,235,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(37,99,235,.06) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;z-index:0}
+.hero::after{content:'';position:absolute;top:50%;left:50%;width:80vw;height:80vw;max-width:800px;max-height:800px;transform:translate(-50%,-50%);background:radial-gradient(circle,var(--accent-glow),transparent 60%);pointer-events:none;z-index:0;animation:glow 6s ease-in-out infinite}
+@keyframes glow{0%,100%{opacity:.4;transform:translate(-50%,-50%) scale(1)}50%{opacity:.7;transform:translate(-50%,-50%) scale(1.08)}}
+.hero-content{position:relative;z-index:1;text-align:center;max-width:880px;padding:0 1.5rem}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.3);color:#93C5FD;padding:.4rem 1rem;border-radius:100px;font-size:.78rem;font-weight:500;margin-bottom:2rem;letter-spacing:.03em}
+.hero-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent-bright);animation:dot 2s infinite}
+@keyframes dot{0%,100%{opacity:1;box-shadow:0 0 8px var(--accent-bright)}50%{opacity:.4;box-shadow:0 0 2px var(--accent-bright)}}
+.hero h1{color:#fff;margin-bottom:1.5rem}
+.hero .lead{color:var(--text-muted);max-width:640px;margin:0 auto 2.5rem}
+.hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+.btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;background:var(--accent);color:#fff;padding:1rem 2.2rem;border-radius:var(--radius);font-weight:600;font-size:1.05rem;transition:all .3s;box-shadow:0 4px 20px rgba(37,99,235,.3);cursor:pointer;border:none;font-family:inherit}
+.btn-primary:hover{background:#1D4ED8;transform:translateY(-2px);color:#fff;box-shadow:0 6px 30px rgba(37,99,235,.4)}
+.btn-primary:active{transform:translateY(0)}
+.btn-secondary{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;background:transparent;color:var(--text-muted);padding:1rem 2rem;border-radius:var(--radius);border:1px solid var(--border);font-weight:500;transition:all .3s;cursor:pointer;font-family:inherit;font-size:1rem}
+.btn-secondary:hover{border-color:var(--accent);color:#fff;transform:translateY(-1px)}
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:1;color:var(--text-muted);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:.4rem}
+.scroll-hint svg{width:18px;height:18px;animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+/* SCROLL ANIMATIONS */
+@supports (animation-timeline:view()){
+  .hero-content{animation:hero-exit linear both;animation-timeline:view();animation-range:exit 0% exit 60%}
+  @keyframes hero-exit{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(-50px) scale(.96)}}
+  .hero::before{animation:grid-zoom linear both;animation-timeline:view();animation-range:exit 0% exit 100%}
+  @keyframes grid-zoom{from{transform:scale(1)}to{transform:scale(1.4)}}
+  .animate-in{animation:sec-enter linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+  @keyframes sec-enter{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+  .animate-scale{animation:card-enter linear both;animation-timeline:view();animation-range:entry 0% entry 55%}
+  @keyframes card-enter{from{opacity:0;transform:translateY(25px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+  .animate-scale:nth-child(2){animation-range:entry 4% entry 59%}
+  .animate-scale:nth-child(3){animation-range:entry 8% entry 63%}
+  .douleur-card{animation:douleur-enter linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
+  @keyframes douleur-enter{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
+  .douleur-card:nth-child(2){animation-range:entry 5% entry 45%}
+  .douleur-card:nth-child(3){animation-range:entry 10% entry 50%}
+  .douleur-card:nth-child(4){animation-range:entry 15% entry 55%}
+}
+
+/* SECTIONS */
+.section-dark{background:var(--bg-dark);color:var(--text-light)}
+.section-dark h2{color:#fff}
+.section-dark .lead{color:var(--text-muted)}
+.section-grey{background:var(--bg-section)}
+.section-blue{background:#0F1B33;color:var(--text-light)}
+.section-blue h2{color:#fff}
+.section-header{text-align:center;max-width:720px;margin:0 auto clamp(2.5rem,6vw,4rem)}
+.section-header h2{margin-bottom:1rem}
+.section-header .lead{color:var(--text-dm)}
+.section-dark .section-header .lead,.section-blue .section-header .lead{color:var(--text-muted)}
+
+/* CARDS */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.8rem}
+.card{background:#fff;border:1px solid var(--border-d);border-radius:var(--radius-lg);padding:2.2rem;transition:transform .3s,box-shadow .3s,border-color .3s}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(15,23,42,.08);border-color:rgba(37,99,235,.3)}
+.card h3{display:flex;align-items:center;gap:.7rem;margin-bottom:1rem;color:var(--text-dark)}
+.card .num{font-size:1.8rem;font-weight:800;color:var(--accent);flex-shrink:0;opacity:.8}
+.card p{color:var(--text-dm);font-size:.95rem}
+.card strong{color:var(--text-dark)}
+.card-dark{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2.2rem;transition:transform .3s,border-color .3s,background .3s}
+.card-dark:hover{transform:translateY(-3px);border-color:rgba(59,130,246,.3);background:rgba(255,255,255,.05)}
+.card-dark h3{color:#fff;display:flex;align-items:center;gap:.7rem;margin-bottom:1rem}
+.card-dark .num{font-size:1.8rem;font-weight:800;color:var(--accent-bright);flex-shrink:0}
+.card-dark p{color:var(--text-muted);font-size:.95rem}
+.card-dark strong{color:var(--text-light)}
+
+/* QUI JE SUIS */
+.about-grid{display:grid;grid-template-columns:auto 1fr;gap:clamp(2rem,5vw,4rem);align-items:center;max-width:950px;margin:0 auto}
+.about-photo{position:relative;width:clamp(200px,22vw,280px);aspect-ratio:9/16;border-radius:16px;overflow:hidden;border:3px solid var(--accent);box-shadow:0 20px 60px rgba(37,99,235,.25);flex-shrink:0;transition:transform .4s var(--tr),box-shadow .4s}
+.about-photo:hover{transform:scale(1.02);box-shadow:0 25px 70px rgba(37,99,235,.35)}
+.about-photo img{width:100%;height:100%;object-fit:cover;object-position:center 15%;display:block}
+.about-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(10,15,26,.3));pointer-events:none;border-radius:16px}
+.about-info h3{color:var(--text-dark);margin-bottom:.5rem;font-size:1.5rem}
+.about-info .role{color:var(--accent);font-weight:600;font-size:.9rem;margin-bottom:1.2rem;text-transform:uppercase;letter-spacing:.05em}
+.about-info p{color:var(--text-dm);margin-bottom:1rem;font-size:.95rem}
+.about-info strong{color:var(--text-dark)}
+.about-list{list-style:none;padding:0;margin-top:1.2rem}
+.about-list li{padding:.45rem 0;color:var(--text-dm);font-size:.9rem;display:flex;align-items:center;gap:.6rem}
+.about-list li::before{content:'✓';color:var(--success);font-weight:700;flex-shrink:0}
+.linkedin-link{display:inline-flex;align-items:center;gap:.5rem;margin-top:.8rem;font-size:.85rem;color:var(--accent);font-weight:600;transition:color .3s}
+.linkedin-link:hover{color:#1D4ED8}
+.linkedin-link svg{width:16px;height:16px}
+.video-container{max-width:720px;margin:0 auto;border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3);background:var(--bg-dark)}
+.video-container video{width:100%;display:block}
+
+/* SIGNAL DU JOUR */
+.sdj-card{background:#fff;border:1px solid var(--border-d);border-radius:var(--radius-lg);padding:clamp(1.5rem,4vw,2.5rem);box-shadow:0 8px 30px rgba(15,23,42,.06)}
+.sdj-header{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.sdj-live{display:flex;align-items:center;gap:.6rem}
+.sdj-dot{width:8px;height:8px;border-radius:50%;background:var(--success);animation:dot 2s infinite}
+.sdj-label{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--success)}
+.sdj-date{font-size:.75rem;color:var(--text-dm)}
+.sdj-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.8rem;margin-bottom:1.5rem}
+.sdj-stat{padding:.7rem;background:var(--bg-section);border-radius:8px;text-align:center}
+.sdj-stat-label{font-size:.7rem;color:var(--text-dm);text-transform:uppercase;letter-spacing:.05em}
+.sdj-stat-value{font-weight:700;color:var(--text-dark);font-size:.9rem}
+
+/* PRICING */
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.8rem;align-items:stretch}
+.pricing-card{background:#fff;border:1px solid var(--border-d);border-radius:var(--radius-lg);padding:2.5rem;display:flex;flex-direction:column;position:relative;transition:transform .3s,box-shadow .3s,border-color .3s}
+.pricing-card:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(15,23,42,.1);border-color:var(--accent)}
+.pricing-card.featured{background:var(--bg-dark);color:var(--text-light);border:2px solid var(--accent)}
+.pricing-card.featured h3{color:#fff}
+.pricing-card.featured .price{color:#fff}
+.pricing-card.featured .price-desc{color:var(--text-muted)}
+.pricing-card.featured li{color:var(--text-muted);border-color:var(--border)}
+.pricing-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:.3rem 1.2rem;border-radius:100px;font-size:.72rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
+.pricing-card h3{margin-bottom:.5rem}
+.pricing-card .price{font-size:2.2rem;font-weight:800;color:var(--text-dark);margin-bottom:.2rem;letter-spacing:-.03em}
+.pricing-card .price small{font-size:.85rem;font-weight:400;color:var(--text-dm);letter-spacing:0}
+.pricing-card .price-desc{font-size:.85rem;color:var(--text-dm);margin-bottom:1.5rem}
+.pricing-card ul{list-style:none;padding:0;margin-bottom:1.8rem;flex-grow:1}
+.pricing-card li{padding:.65rem 0;border-bottom:1px solid var(--border-d);font-size:.88rem;color:var(--text-dm);display:flex;align-items:flex-start;gap:.55rem}
+.pricing-card li::before{content:'✓';color:var(--success);font-weight:700;flex-shrink:0}
+.pricing-card .btn-primary,.pricing-card .btn-secondary{width:100%;text-align:center;justify-content:center}
+.pricing-pay-options{display:flex;gap:.5rem;justify-content:center;margin-top:.8rem;flex-wrap:wrap}
+.pay-tag{font-size:.72rem;color:var(--text-dm);background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.15);padding:.3rem .8rem;border-radius:100px;font-weight:500}
+.roi-box{background:rgba(37,99,235,.06);padding:1rem 1.2rem;border-radius:8px;margin-bottom:1.2rem}
+.roi-box p{font-size:.82rem;color:var(--text-dark);margin:0;line-height:1.55}
+.featured .roi-box{background:rgba(37,99,235,.15)}
+.featured .roi-box p{color:var(--text-light)}
+.for-who{font-size:.85rem;color:var(--text-dm);margin-bottom:1.2rem;border-left:2px solid var(--accent);padding-left:.8rem}
+.featured .for-who{color:var(--text-muted);border-left-color:var(--accent-bright)}
+.for-who strong{color:var(--text-dark)}
+.featured .for-who strong{color:#fff}
+.roi-input{width:100%;padding:.9rem;border:1px solid var(--border-d);border-radius:8px;font-family:inherit;font-size:1rem;color:var(--text-dark);transition:border-color .3s,box-shadow .3s}
+.roi-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.roi-label{display:block;font-weight:600;margin-bottom:.4rem;font-size:.9rem;color:var(--text-dark)}
+
+/* GARANTIE */
+.guarantee-section{background:linear-gradient(135deg,#059669,#047857);color:#fff;text-align:center}
+.guarantee-section h2{color:#fff}
+.guarantee-section .lead{color:rgba(255,255,255,.85)}
+.guarantee-icon{width:64px;height:64px;margin:0 auto 1.5rem;background:rgba(255,255,255,.15);border-radius:50%;display:grid;place-items:center}
+.guarantee-icon svg{width:32px;height:32px;color:#fff}
+
+/* CADRE */
+.cadre-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.8rem;max-width:900px;margin:0 auto}
+.cadre-col{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2.2rem}
+.cadre-col h3{margin-bottom:1.3rem;display:flex;align-items:center;gap:.7rem;color:#fff}
+.cadre-col .icon{width:34px;height:34px;display:grid;place-items:center;border-radius:8px;flex-shrink:0}
+.cadre-col .yes-icon{background:rgba(16,185,129,.15);color:#34D399}
+.cadre-col .no-icon{background:rgba(239,68,68,.15);color:#F87171}
+.cadre-col ul{list-style:none;padding:0}
+.cadre-col li{padding:.7rem 0;border-bottom:1px solid var(--border);font-size:.92rem;color:var(--text-muted);display:flex;align-items:flex-start;gap:.6rem}
+.cadre-col li:last-child{border-bottom:none}
+.cadre-col li svg{width:17px;height:17px;flex-shrink:0;margin-top:3px}
+.cadre-col .yes-list li svg{color:#34D399}
+.cadre-col .no-list li svg{color:#F87171}
+
+/* FAQ */
+.faq-list{max-width:780px;margin:0 auto}
+.faq-item{border:1px solid var(--border-d);border-radius:var(--radius);margin-bottom:.9rem;background:#fff;overflow:hidden;transition:border-color .3s,box-shadow .3s}
+.faq-item:hover{border-color:rgba(37,99,235,.3);box-shadow:0 4px 20px rgba(15,23,42,.05)}
+.faq-item summary{padding:1.3rem 1.6rem;font-weight:600;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:1rem;color:var(--text-dark);font-size:.98rem;transition:color .3s;user-select:none;-webkit-user-select:none}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:'+';font-size:1.4rem;font-weight:400;color:var(--text-dm);transition:transform .3s var(--tr);flex-shrink:0}
+.faq-item[open] summary::after{transform:rotate(45deg)}
+.faq-item[open] summary{color:var(--accent)}
+.faq-item .faq-answer{padding:0 1.6rem 1.3rem;color:var(--text-dm);font-size:.92rem;line-height:1.7;animation:faq-open .3s ease-out}
+@keyframes faq-open{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:start}
+.contact-info h2{color:#fff;margin-bottom:1rem}
+.contact-info .lead{color:var(--text-muted)}
+.contact-methods{display:flex;flex-direction:column;gap:.9rem;margin-top:2rem}
+.contact-method{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.4rem;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:var(--radius);color:var(--text-light);transition:all .3s}
+.contact-method:hover{border-color:var(--accent);background:rgba(37,99,235,.08);color:#fff;transform:translateX(4px)}
+.contact-method svg{width:20px;height:20px;color:var(--accent);flex-shrink:0}
+.contact-method span{font-weight:500}
+.contact-form{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2.2rem}
+.contact-form h3{color:#fff;margin-bottom:1.5rem}
+.form-group{margin-bottom:1rem}
+.form-group input,.form-group textarea{width:100%;padding:1rem;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;color:#fff;font-family:inherit;font-size:.95rem;transition:border-color .3s,box-shadow .3s}
+.form-group input::placeholder,.form-group textarea::placeholder{color:var(--text-muted)}
+.form-group input:focus,.form-group textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+.form-group textarea{resize:vertical;min-height:100px}
+
+/* FOOTER */
+footer{background:var(--bg-darker);color:var(--text-muted);padding:2.5rem 0;border-top:1px solid var(--border)}
+.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
+.footer-inner p{font-size:.82rem;margin:0}
+.footer-links{display:flex;gap:1.8rem;list-style:none;flex-wrap:wrap}
+.footer-links a{color:var(--text-muted);font-size:.82rem;transition:color .3s}
+.footer-links a:hover{color:#fff}
+
+/* CONTAINER QUERIES */
+@supports (container-type:inline-size){.pricing-card{container-type:inline-size}@container (max-width:340px){.pricing-card{padding:1.8rem}.pricing-card .price{font-size:1.8rem}}}
+
+/* RESPONSIVE */
+@media (max-width:768px){
+  .nav-links{display:none}
+  .nav-cta{padding:.45rem 1rem;font-size:.82rem}
+  .trust-bar{display:none}
+  .hero{padding-top:calc(var(--nav-h) + 3rem)}
+  .hero h1{font-size:clamp(1.8rem,7vw,2.8rem)}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .cadre-grid{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .about-grid{grid-template-columns:1fr;justify-items:center;text-align:center}
+  .about-photo{width:min(260px,80vw)}
+  .about-list li{justify-content:center}
+  .scroll-hint{display:none}
+  .pricing-pay-options{justify-content:center}
+}
+@media (max-width:480px){section{padding:3rem 0}.card,.pricing-card,.card-dark{padding:1.7rem}.hero-actions .btn-primary,.hero-actions .btn-secondary{padding:.9rem 1.5rem;font-size:.95rem}}
+
+/* A11Y */
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.hero::before,.hero::after,.hero-content,.animate-in,.animate-scale,.douleur-card,.faq-answer,.sdj-dot{animation:none!important}}
+:focus-visible{outline:3px solid var(--accent-bright);outline-offset:2px;border-radius:4px}
+.skip-link{position:absolute;top:-100%;left:1rem;background:var(--accent);color:#fff;padding:.8rem 1.5rem;border-radius:0 0 var(--radius) var(--radius);z-index:200;font-weight:600;transition:top .3s}
+.skip-link:focus{top:0}
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-track{background:var(--bg-dark)}
+::-webkit-scrollbar-thumb{background:#334155;border-radius:5px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+:target{scroll-margin-top:calc(var(--nav-h) + var(--trust-h) + 16px)}
+</style>
+</head>
+
+<body>
+<a href="#main" class="skip-link">Aller au contenu</a>
+
+<header role="banner">
+  <nav class="nav" aria-label="Navigation principale">
+    <div class="container nav-inner">
+      <a href="/" class="nav-logo" aria-label="Accueil">
+        <svg viewBox="0 0 100 100" fill="none" aria-hidden="true"><rect width="100" height="100" rx="20" fill="#1B2A4A"/><circle cx="50" cy="50" r="28" fill="none" stroke="#3B82F6" stroke-width="4"/><path d="M50 22v8M50 70v8M22 50h8M70 50h8" stroke="#3B82F6" stroke-width="4" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#3B82F6"/></svg>
+        <span>ARGUS</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#signal-du-jour">Signal du jour</a></li>
+        <li><a href="#argus">ARGUS</a></li>
+        <li><a href="#cas-etude">Cas réels</a></li>
+        <li><a href="#formules">Tarifs</a></li>
+        <li><a href="#roi">ROI</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <a href="https://wa.me/18573018431?text=Bonjour%2C%20je%20veux%20une%20d%C3%A9mo%20ARGUS" class="nav-cta" rel="noopener" target="_blank">Démo ARGUS</a>
+    </div>
+  </nav>
+</header>
+
+<!-- TRUST BAR -->
+<div class="trust-bar" role="region" aria-label="Preuves et garanties">
+  <div class="container trust-inner">
+    <span class="trust-item"><strong>3</strong> missions livrées</span>
+    <span class="trust-sep" aria-hidden="true">•</span>
+    <span class="trust-item"><strong>70+</strong> signaux réels</span>
+    <span class="trust-sep" aria-hidden="true">•</span>
+    <span class="trust-item"><strong>6</strong> bases croisées</span>
+    <span class="trust-sep" aria-hidden="true">•</span>
+    <span class="trust-item"><strong>NDA</strong> signés</span>
+    <span class="trust-sep" aria-hidden="true">•</span>
+    <span class="trust-item"><strong>Garantie 90 jours</strong></span>
+  </div>
+</div>
+
+<main id="main">
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="hero" aria-label="Introduction">
+  <div class="hero-content">
+    <span class="hero-badge">ARGUS v1.0 • Radar de signaux fonciers • 6 bases publiques</span>
+    <h1>Un immeuble entre en liquidation.<br><span class="text-gradient">ARGUS le détecte.</span><br>Vous instruisez en premier.</h1>
+    <p class="lead">Chaque nuit, ARGUS scanne 6 bases publiques françaises. Chaque matin, vous recevez les signaux de détresse financière dans votre zone — avant vos concurrents. 100% légal. 0% commission. Forfaits fixes.</p>
+    <div class="hero-actions">
+      <a href="#signal-du-jour" class="btn-primary">Voir le signal du jour</a>
+      <a href="#cas-etude" class="btn-secondary">Voir les cas réels</a>
+    </div>
+  </div>
+  <div class="scroll-hint" aria-hidden="true">
+    <span>Découvrir</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</section>
+
+<!-- ═══ SIGNAL DU JOUR ═══ -->
+<section class="section-grey" id="signal-du-jour" aria-labelledby="sdj-title" style="padding:clamp(2.5rem,5vw,4rem) 0">
+  <div class="container" style="max-width:780px">
+    <div class="sdj-card animate-in">
+      <div class="sdj-header">
+        <div class="sdj-live">
+          <span class="sdj-dot" aria-hidden="true"></span>
+          <span class="sdj-label">Signal du jour</span>
+        </div>
+        <span class="sdj-date">Mis à jour le <time datetime="2026-10-16">16/10/2026</time></span>
+      </div>
+      <h3 id="sdj-title" style="font-size:clamp(1.1rem,2.5vw,1.4rem);margin-bottom:.8rem;color:var(--text-dark)">Département 93 — Immeuble en liquidation</h3>
+      <div class="sdj-stats">
+        <div class="sdj-stat"><div class="sdj-stat-label">Type</div><div class="sdj-stat-value">Immeuble 340 m²</div></div>
+        <div class="sdj-stat"><div class="sdj-stat-label">Score Détresse</div><div class="sdj-stat-value" style="color:var(--danger)">82 / 100</div></div>
+        <div class="sdj-stat"><div class="sdj-stat-label">Décote estimée</div><div class="sdj-stat-value" style="color:var(--success)">−34 %</div></div>
+        <div class="sdj-stat"><div class="sdj-stat-label">Délai</div><div class="sdj-stat-value">36h</div></div>
+      </div>
+      <p style="font-size:.88rem;color:var(--text-dm);line-height:1.6;margin-bottom:1.3rem">Radiation BODACC d'une SCI (activité 68.20B), parcelle dans un îlot constructible. DVF quartier : 3 800 €/m². Prix affiché : 2 100 €/m².</p>
+      <div style="display:flex;gap:.7rem;flex-wrap:wrap;align-items:center">
+        <a href="https://wa.me/18573018431?text=Bonjour%2C%20je%20veux%20la%20fiche%20compl%C3%A8te%20du%20signal%20du%20jour" class="btn-primary" rel="noopener" target="_blank" style="padding:.7rem 1.5rem;font-size:.88rem">Voir la fiche complète →</a>
+        <span style="font-size:.75rem;color:var(--text-dm)">Réservé aux abonnés ARGUS</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DOULEUR ═══ -->
+<section class="section-dark" id="douleur" aria-labelledby="douleur-title">
+  <div class="container" style="max-width:820px">
+    <div class="section-header animate-in">
+      <h2 id="douleur-title">Ce qui vous réveille à 3h du matin</h2>
+      <p class="lead">Ce n'est pas un problème de compétence. C'est un problème d'information.</p>
+    </div>
+    <div style="display:grid;gap:1rem" class="animate-in">
+      <div class="douleur-card" style="padding:1.4rem 1.6rem;background:rgba(255,255,255,.03);border-left:3px solid #EF4444;border-radius:8px"><p style="color:var(--text-light);margin:0;font-size:1.05rem">« Un immeuble en liquidation dans ma zone. Je l'apprends trois semaines trop tard. La décote est déjà partie. »</p></div>
+      <div class="douleur-card" style="padding:1.4rem 1.6rem;background:rgba(255,255,255,.03);border-left:3px solid #EF4444;border-radius:8px"><p style="color:var(--text-light);margin:0;font-size:1.05rem">« Un concurrent signe un compromis sur la rue que je surveille depuis dix-huit mois. »</p></div>
+      <div class="douleur-card" style="padding:1.4rem 1.6rem;background:rgba(255,255,255,.03);border-left:3px solid #EF4444;border-radius:8px"><p style="color:var(--text-light);margin:0;font-size:1.05rem">« Je paie le prix affiché. Lui, il a négocié −30 %. »</p></div>
+      <div class="douleur-card" style="padding:1.4rem 1.6rem;background:rgba(255,255,255,.03);border-left:3px solid #EF4444;border-radius:8px"><p style="color:var(--text-light);margin:0;font-size:1.05rem">« Je construis mon patrimoine à la sueur. Lui, il construit une position. »</p></div>
+    </div>
+    <div style="text-align:center;margin-top:3rem" class="animate-in">
+      <p class="lead" style="color:var(--text-light);font-weight:600;margin-bottom:0">L'information est publique. Mais sans système, vous la voyez trop tard.<br><span class="text-gradient" style="font-size:1.3em">C'est ce qu'ARGUS corrige.</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ QUI JE SUIS ═══ -->
+<section class="section-grey" id="qui" aria-labelledby="qui-title">
+  <div class="container">
+    <div class="section-header animate-in"><h2 id="qui-title">Qui je suis</h2></div>
+    <div class="about-grid animate-in">
+      <div class="about-photo">
+        <img src="woudji-photo.jpg" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 180 320%22%3E%3Crect fill=%22%231B2A4A%22 width=%22180%22 height=%22320%22/%3E%3Ctext x=%2290%22 y=%22160%22 text-anchor=%22middle%22 fill=%22%233B82F6%22 font-family=%22sans-serif%22 font-size=%2218%22%3EWV%3C/text%3E%3C/svg%3E'" alt="Woudji Victor — Fondateur ARGUS" width="280" height="498" loading="eager">
+      </div>
+      <div class="about-info">
+        <h3>Woudji Victor</h3>
+        <p class="role">Fondateur & développeur — ARGUS</p>
+        <p>J'ai construit ARGUS parce que le problème n'est pas le manque d'information — c'est le bruit. Six bases publiques publient en continu. Aucun opérateur n'a le temps de les croiser chaque jour. <strong>ARGUS fait ce travail, chaque nuit.</strong></p>
+        <p>Mon approche : <strong>zéro entremise, zéro commission</strong>. Vous achetez un radar. Vous chassez votre gibier. Uniquement des forfaits fixes pour un logiciel qui travaille pendant que vous opérez.</p>
+        <ul class="about-list">
+          <li>6 sources croisées : BODACC, DVF, SIRENE, Cadastre, PLU, Géorisques</li>
+          <li>Score de Détresse automatisé (0-100)</li>
+          <li>Fiches horodatées, traçables à leur source publique</li>
+          <li>SaaS B2B — hors loi Hoguet, hors entremise</li>
+        </ul>
+        <a href="https://www.linkedin.com/in/woudji-victor-a9470511a/" target="_blank" rel="noopener" class="linkedin-link">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.55C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+          LinkedIn — Woudji Victor
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ARGUS ═══ -->
+<section id="argus" class="section-dark" aria-labelledby="argus-title" style="background:var(--bg-darker)">
+  <div class="container">
+    <div class="section-header animate-in" style="max-width:820px">
+      <span class="hero-badge" style="margin-bottom:1.5rem">ARGUS v1.0 • Radar de signaux fonciers</span>
+      <h2 id="argus-title" style="color:#fff">Le radar qui ne dort jamais.</h2>
+      <p class="lead" style="color:var(--text-muted)">Chaque nuit à 6h, <strong style="color:#fff">ARGUS scanne 6 bases publiques</strong> françaises. Chaque matin, vous recevez les signaux de détresse financière dans <em>votre</em> zone.</p>
+    </div>
+    <div class="animate-in" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;max-width:900px;margin:0 auto 4rem;padding:1.5rem;background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.25);border-radius:var(--radius-lg)">
+      <div style="text-align:center"><div style="font-size:clamp(1.6rem,4vw,2.2rem);font-weight:800;color:#60A5FA;letter-spacing:-.03em">70+</div><div style="font-size:.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-top:.3rem">Signaux réels</div></div>
+      <div style="text-align:center"><div style="font-size:clamp(1.6rem,4vw,2.2rem);font-weight:800;color:#60A5FA;letter-spacing:-.03em">6</div><div style="font-size:.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-top:.3rem">Bases croisées</div></div>
+      <div style="text-align:center"><div style="font-size:clamp(1.6rem,4vw,2.2rem);font-weight:800;color:#60A5FA;letter-spacing:-.03em">&lt;48h</div><div style="font-size:.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-top:.3rem">Délai d'alerte</div></div>
+      <div style="text-align:center"><div style="font-size:clamp(1.6rem,4vw,2.2rem);font-weight:800;color:#10B981;letter-spacing:-.03em">100%</div><div style="font-size:.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-top:.3rem">Légal</div></div>
+    </div>
+    <div style="max-width:1000px;margin:0 auto">
+      <h3 style="text-align:center;color:#fff;font-size:clamp(1.3rem,3vw,1.7rem);margin-bottom:2.5rem">Comment ARGUS fonctionne</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem">
+        <div class="card-dark animate-scale" style="position:relative;padding-top:3.5rem">
+          <span style="position:absolute;top:1.2rem;left:1.5rem;font-size:.7rem;font-weight:700;letter-spacing:.1em;color:#3B82F6;text-transform:uppercase">Étape 01</span>
+          <span style="position:absolute;top:1rem;right:1.5rem;font-size:2rem" aria-hidden="true">📡</span>
+          <h3 style="color:#fff;font-size:1.05rem;margin-bottom:.6rem">Scanner</h3>
+          <p style="font-size:.9rem;color:var(--text-muted);line-height:1.6">Chaque nuit, ARGUS interroge <strong style="color:#fff">6 bases publiques</strong> : BODACC, DVF, SIRENE, Cadastre, PLU, Géorisques.</p>
+        </div>
+        <div class="card-dark animate-scale" style="position:relative;padding-top:3.5rem">
+          <span style="position:absolute;top:1.2rem;left:1.5rem;font-size:.7rem;font-weight:700;letter-spacing:.1em;color:#3B82F6;text-transform:uppercase">Étape 02</span>
+          <span style="position:absolute;top:1rem;right:1.5rem;font-size:2rem" aria-hidden="true">🔬</span>
+          <h3 style="color:#fff;font-size:1.05rem;margin-bottom:.6rem">Croiser</h3>
+          <p style="font-size:.9rem;color:var(--text-muted);line-height:1.6">Un dirigeant en liquidation (BODACC) + une parcelle sous-évaluée (DVF) + une zone constructible (PLU) = <strong style="color:#fff">un signal de décote.</strong></p>
+        </div>
+        <div class="card-dark animate-scale" style="position:relative;padding-top:3.5rem">
+          <span style="position:absolute;top:1.2rem;left:1.5rem;font-size:.7rem;font-weight:700;letter-spacing:.1em;color:#3B82F6;text-transform:uppercase">Étape 03</span>
+          <span style="position:absolute;top:1rem;right:1.5rem;font-size:2rem" aria-hidden="true">🎯</span>
+          <h3 style="color:#fff;font-size:1.05rem;margin-bottom:.6rem">Scorer</h3>
+          <p style="font-size:.9rem;color:var(--text-muted);line-height:1.6">Chaque actif reçoit un <strong style="color:#fff">Score de Détresse 0–100</strong>. Au-dessus de 75, l'opportunité est publiée dans votre flux.</p>
+        </div>
+        <div class="card-dark animate-scale" style="position:relative;padding-top:3.5rem">
+          <span style="position:absolute;top:1.2rem;left:1.5rem;font-size:.7rem;font-weight:700;letter-spacing:.1em;color:#3B82F6;text-transform:uppercase">Étape 04</span>
+          <span style="position:absolute;top:1rem;right:1.5rem;font-size:2rem" aria-hidden="true">⚡</span>
+          <h3 style="color:#fff;font-size:1.05rem;margin-bottom:.6rem">Alerter</h3>
+          <p style="font-size:.9rem;color:var(--text-muted);line-height:1.6">Fiche PDF <strong style="color:#fff">horodatée et traçable</strong>, publiée sous 48h. Notification Email, Telegram, WhatsApp.</p>
+        </div>
+      </div>
+    </div>
+    <div class="animate-in" style="max-width:820px;margin:clamp(3rem,6vw,5rem) auto 0;padding:2rem;background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(37,99,235,.08));border:1px solid rgba(16,185,129,.3);border-radius:var(--radius-lg);text-align:center">
+      <div style="display:inline-flex;align-items:center;gap:.6rem;background:rgba(16,185,129,.15);color:#34D399;padding:.5rem 1.2rem;border-radius:100px;font-size:.78rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:1rem">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+        Signature ARGUS
+      </div>
+      <h3 style="color:#fff;font-size:clamp(1.2rem,2.8vw,1.5rem);margin-bottom:.8rem">Zéro hallucination. Zéro invention.</h3>
+      <p style="color:var(--text-muted);font-size:.95rem;line-height:1.7;max-width:600px;margin:0 auto">Chaque fiche est horodatée et traçable à sa source publique. Si ARGUS n'a pas la donnée, il écrit <em>« non disponible »</em> — jamais une invention.</p>
+    </div>
+    <div class="animate-in" style="max-width:900px;margin:3.5rem auto 0">
+      <h3 style="text-align:center;color:var(--text-muted);font-size:1rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.8rem;font-weight:600">6 sources publiques croisées</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.7rem">
+        <div style="padding:.9rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;text-align:center;font-size:.82rem;color:var(--text-light);font-weight:500">BODACC</div>
+        <div style="padding:.9rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;text-align:center;font-size:.82rem;color:var(--text-light);font-weight:500">DVF (DGFiP)</div>
+        <div style="padding:.9rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;text-align:center;font-size:.82rem;color:var(--text-light);font-weight:500">SIRENE</div>
+        <div style="padding:.9rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;text-align:center;font-size:.82rem;color:var(--text-light);font-weight:500">Cadastre</div>
+        <div style="padding:.9rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;text-align:center;font-size:.82rem;color:var(--text-light);font-weight:500">PLU</div>
+        <div style="padding:.9rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;text-align:center;font-size:.82rem;color:var(--text-light);font-weight:500">Géorisques</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CAS D'ÉTUDE ═══ -->
+<section id="cas-etude" class="section-grey" aria-labelledby="cas-title">
+  <div class="container">
+    <div class="section-header animate-in" style="max-width:780px">
+      <span class="hero-badge" style="margin-bottom:1.5rem;background:rgba(37,99,235,.08);border-color:rgba(37,99,235,.25);color:var(--accent)">3 missions livrées • NDA signés • Résultats anonymisés</span>
+      <h2 id="cas-title">Ce qui a déjà été livré.</h2>
+      <p class="lead" style="color:var(--text-dm)">Trois missions réelles. Noms et adresses masqués. Chiffres et signaux authentiques.</p>
+    </div>
+    <div class="card-grid" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr))">
+      <article class="card animate-scale" style="position:relative;padding-top:3rem">
+        <span style="position:absolute;top:1.2rem;left:1.5rem;font-size:.7rem;font-weight:700;letter-spacing:.1em;color:var(--accent);text-transform:uppercase">Cas 01 — Marchand de biens</span>
+        <span style="position:absolute;top:1rem;right:1.3rem;font-size:1.8rem" aria-hidden="true">🏢</span>
+        <h3 style="margin-bottom:.3rem">Immeuble en liquidation — 93</h3>
+        <p style="font-size:.82rem;color:var(--text-dm);margin-bottom:1.2rem">Client : MDB <strong>+ 22 opérations</strong> / IDF Est</p>
+        <div style="background:rgba(239,68,68,.06);border-left:3px solid #EF4444;padding:.9rem 1rem;border-radius:6px;margin-bottom:1rem">
+          <p style="margin:0;font-size:.82rem;color:var(--text-dark);line-height:1.55"><strong>Signal :</strong> Radiation BODACC d'une SCI, parcelle constructible. DVF : 3 800 €/m². Prix affiché : 2 100 €/m².</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.2rem">
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:var(--text-dm)"><span style="color:#10B981;font-weight:700">✓</span> Croisement BODACC × Cadastre × DVF</div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:var(--text-dm)"><span style="color:#10B981;font-weight:700">✓</span> Fiche livrée en <strong>36h</strong></div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:var(--text-dm)"><span style="color:#10B981;font-weight:700">✓</span> Score : <strong>82/100</strong></div>
+        </div>
+        <div style="padding-top:1rem;border-top:1px solid var(--border-d)">
+          <p style="margin:0;font-size:.85rem;color:var(--text-dark)"><strong style="color:var(--accent)">Résultat :</strong> offre déposée avant concurrents. <strong>Décote : −34 %.</strong></p>
+        </div>
+      </article>
+      <article class="card animate-scale" style="position:relative;padding-top:3rem">
+        <span style="position:absolute;top:1.2rem;left:1.5rem;font-size:.7rem;font-weight:700;letter-spacing:.1em;color:var(--accent);text-transform:uppercase">Cas 02 — Family Office</span>
+        <span style="position:absolute;top:1rem;right:1.3rem;font-size:1.8rem" aria-hidden="true">🏛️</span>
+        <h3 style="margin-bottom:.3rem">Propriété d'exception — Sud</h3>
+        <p style="font-size:.82rem;color:var(--text-dm);margin-bottom:1.2rem">Client : SFO <strong>&gt; 200 M€</strong></p>
+        <div style="background:rgba(239,68,68,.06);border-left:3px solid #EF4444;padding:.9rem 1rem;border-radius:6px;margin-bottom:1rem">
+          <p style="margin:0;font-size:.82rem;color:var(--text-dark);line-height:1.55"><strong>Signal :</strong> Sauvegarde SCI, propriété d'exception. Écart DVF : <strong>−35 %</strong>.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.2rem">
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:var(--text-dm)"><span style="color:#10B981;font-weight:700">✓</span> Détection avant agences locales</div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:var(--text-dm)"><span style="color:#10B981;font-weight:700">✓</span> Aucune contrainte Géorisques</div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:var(--text-dm)"><span style="color:#10B981;font-weight:700">✓</span> Score : <strong>91/100</strong></div>
+        </div>
+        <div style="padding-top:1rem;border-top:1px solid var(--border-d)">
+          <p style="margin:0;font-size:.85rem;color:var(--text-dark)"><strong style="color:var(--accent)">Résultat :</strong> signal transmis <strong>28h</strong>. <strong>Décote cible : −35 %.</strong></p>
+        </div>
+      </article>
+      <article class="card animate-scale" style="position:relative;padding-top:3rem">
+        <span style="position:absolute;top:1.2rem;left:1.5rem;font-size:.7rem;font-weight:700;letter-spacing:.1em;color:var(--accent);text-transform:uppercase">Cas 03 — Promoteur</span>
+        <span style="position:absolute;top:1rem;right:1.3rem;font-size:1.8rem" aria-hidden="true">🏗️</span>
+        <h3 style="margin-bottom:.3rem">Bureaux — Hauts-de-Seine (92)</h3>
+        <p style="font-size:.82rem;color:var(--text-dm);margin-bottom:1.2rem">Client : Promoteur <strong>+ 40 opérations</strong></p>
+        <div style="background:rgba(239,68,68,.06);border-left:3px solid #EF4444;padding:.9rem 1rem;border-radius:6px;margin-bottom:1rem">
+          <p style="margin:0;font-size:.82rem;color:var(--text-dark);line-height:1.55"><strong>Signal :</strong> Bureaux, propriétaire en liquidation. Potentiel résidentiel. DPE : G. PLU : U.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.2rem">
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:var(--text-dm)"><span style="color:#10B981;font-weight:700">✓</span> Croisement BODACC × PLU × DPE</div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:var(--text-dm)"><span style="color:#10B981;font-weight:700">✓</span> Alerte <strong>41h</strong></div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:var(--text-dm)"><span style="color:#10B981;font-weight:700">✓</span> Score : <strong>78/100</strong></div>
+        </div>
+        <div style="padding-top:1rem;border-top:1px solid var(--border-d)">
+          <p style="margin:0;font-size:.85rem;color:var(--text-dark)"><strong style="color:var(--accent)">Résultat :</strong> faisabilité engagée. <strong>Décote visée : −28 %.</strong></p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TARIFS ═══ -->
+<section id="formules" aria-labelledby="formules-title">
+  <div class="container">
+    <div class="section-header animate-in">
+      <h2 id="formules-title">Trois niveaux. Une seule position.</h2>
+      <p class="lead">Vous achetez un radar qui travaille pendant que vous opérez.</p>
+    </div>
+    <div class="pricing-grid">
+      <article class="pricing-card animate-scale" aria-label="Diagnostic">
+        <h3>01 — Diagnostic Stratégique</h3>
+        <p class="price">25 000 € <small>HT</small></p>
+        <p class="price-desc">Une fois. 15 jours. Déductible du Niveau 02.</p>
+        <p class="for-who"><strong>Pour qui :</strong> comprendre une zone avant d'y engager du capital.</p>
+        <ul>
+          <li>Cartographie complète d'un département</li>
+          <li>BODACC 24 mois + DVF 5 ans + PLU + Géorisques</li>
+          <li>Décote réelle sur ventes sous contrainte</li>
+          <li>Plan d'action 12 mois + débriefing 1h</li>
+        </ul>
+        <div class="roi-box"><p><strong style="color:var(--accent)">ROI :</strong> un seul actif = 150-400 K€ de marge. <strong>6x-16x.</strong></p></div>
+        <a href="https://wa.me/18573018431?text=Bonjour%2C%20je%20veux%20le%20Diagnostic%20Strat%C3%A9gique%20pour%20le%20d%C3%A9partement%20%5BXX%5D" class="btn-primary" rel="noopener" target="_blank">Démarrer — 25 000 € HT</a>
+        <div class="pricing-pay-options"><span class="pay-tag">🏦 Virement IBAN EUR</span><span class="pay-tag">📋 50%/50%</span></div>
+      </article>
+      <article class="pricing-card featured animate-scale" aria-label="ARGUS Système">
+        <span class="pricing-badge">L'offre principale</span>
+        <h3>02 — ARGUS — 12 mois</h3>
+        <p class="price">120 000 € <small>HT / an</small></p>
+        <p class="price-desc">Installation 15 jours + 12 mois de veille continue.</p>
+        <p class="for-who"><strong>Pour qui :</strong> dominer votre département.</p>
+        <ul>
+          <li>ARGUS configuré sur <strong>VOS critères</strong></li>
+          <li><strong>Priorité départementale</strong> — 2-3 max</li>
+          <li>Dashboard temps réel</li>
+          <li>8-12 fiches/mois — sous 48h</li>
+          <li>Données historiques 24 mois</li>
+          <li>Méthodologie transférée — autonome en 90j</li>
+          <li>Ligne directe — 4h</li>
+        </ul>
+        <div class="roi-box"><p><strong style="color:var(--accent-bright)">ROI :</strong> 1 actif à 200 K€ = 1,7x. 3 actifs = <strong>5x-8x. Chaque année.</strong></p></div>
+        <a href="https://wa.me/18573018431?text=Bonjour%2C%20je%20veux%20ARGUS%20pour%20le%20d%C3%A9partement%20%5BXX%5D" class="btn-primary" rel="noopener" target="_blank">Vérifier mon territoire</a>
+        <div class="pricing-pay-options"><span class="pay-tag">🏦 Virement IBAN EUR</span><span class="pay-tag">📋 4×30 000 €</span></div>
+      </article>
+      <article class="pricing-card animate-scale" aria-label="Partenariat">
+        <h3>03 — Partenariat Stratégique</h3>
+        <p class="price">350 000 € <small>HT / an</small></p>
+        <p class="price-desc">24 mois min. 2-3 par région. Sélection.</p>
+        <p class="for-who"><strong>Pour qui :</strong> holdings, family offices, multi-départements.</p>
+        <ul>
+          <li><strong>Tout ARGUS, inclus</strong></li>
+          <li><strong>Multi-départements</strong> (2-3)</li>
+          <li>Données 5 ans + Formation équipes</li>
+          <li>Dashboard KPI + Ligne 7j/7</li>
+          <li>Accompagnement trimestriel sur site</li>
+        </ul>
+        <div class="roi-box"><p><strong style="color:var(--accent)">ROI :</strong> 10-20 opérations/an = <strong>3-8 M€ de marge sur 3 ans. 10x-20x.</strong></p></div>
+        <a href="https://wa.me/18573018431?text=Bonjour%2C%20je%20veux%20%C3%A9tudier%20un%20Partenariat%20Strat%C3%A9gique" class="btn-secondary" rel="noopener" target="_blank">Étudier mon dossier</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ROI CALCULATOR ═══ -->
+<section class="section-grey" id="roi" aria-labelledby="roi-title">
+  <div class="container" style="max-width:720px">
+    <div class="section-header animate-in"><h2 id="roi-title">Calculez votre retour</h2></div>
+    <div class="card animate-in" style="padding:2.5rem">
+      <div style="margin-bottom:1.2rem"><label for="prixAchat" class="roi-label">Prix d'acquisition (€)</label><input type="number" id="prixAchat" value="800000" min="0" step="50000" class="roi-input" aria-label="Prix d'acquisition"></div>
+      <div style="margin-bottom:1.2rem"><label for="travaux" class="roi-label">Travaux (€)</label><input type="number" id="travaux" value="250000" min="0" step="25000" class="roi-input" aria-label="Travaux"></div>
+      <div style="margin-bottom:1.5rem"><label for="prixRevente" class="roi-label">Prix de revente (€)</label><input type="number" id="prixRevente" value="1500000" min="0" step="50000" class="roi-input" aria-label="Prix de revente"></div>
+      <div style="background:rgba(37,99,235,.06);padding:1.5rem;border-radius:var(--radius);text-align:center">
+        <p style="margin:0;font-size:.85rem;color:var(--text-dm)">Marge brute estimée <span style="font-size:.75rem;display:block">(après notaire ~7,5% et portage 18 mois)</span></p>
+        <p id="marge" style="margin:.6rem 0 0;font-size:clamp(2rem,5vw,2.8rem);font-weight:800;color:var(--accent);letter-spacing:-.03em">—</p>
+        <div style="display:flex;justify-content:center;gap:2rem;margin-top:1rem;flex-wrap:wrap">
+          <div><p style="margin:0;font-size:.75rem;color:var(--text-dm)">ROI Diagnostic (25 K€)</p><p id="roiDiag" style="margin:.2rem 0 0;font-size:1.2rem;font-weight:700;color:var(--accent)">—</p></div>
+          <div><p style="margin:0;font-size:.75rem;color:var(--text-dm)">ROI ARGUS (120 K€/an)</p><p id="roiSys" style="margin:.2rem 0 0;font-size:1.2rem;font-weight:700;color:var(--accent)">—</p></div>
+        </div>
+      </div>
+      <p style="text-align:center;margin-top:1rem;font-size:.72rem;color:var(--text-dm)">Estimation indicative — ne constitue pas un conseil en investissement.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ COMPARAISON ═══ -->
+<section id="comparaison" aria-labelledby="comp-title">
+  <div class="container">
+    <div class="section-header animate-in"><h2 id="comp-title">Pourquoi pas un analyste interne ?</h2></div>
+    <div class="animate-in" style="overflow-x:auto;border-radius:var(--radius-lg);box-shadow:0 8px 30px rgba(15,23,42,.08)">
+      <table style="width:100%;border-collapse:collapse;background:#fff;font-size:.9rem;min-width:700px">
+        <thead><tr style="background:var(--bg-dark);color:#fff"><th style="padding:1.1rem 1.3rem;text-align:left;font-weight:600">Critère</th><th style="padding:1.1rem;text-align:center;font-size:.85rem">Analyste interne</th><th style="padding:1.1rem;text-align:center;font-size:.85rem">Plateforme data</th><th style="padding:1.1rem;text-align:center;font-weight:600;font-size:.85rem;background:var(--accent)">ARGUS</th></tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border-d)"><td style="padding:1rem 1.3rem;font-weight:600">Coût annuel</td><td style="padding:1rem;text-align:center;color:var(--text-dm)">~36 000 €</td><td style="padding:1rem;text-align:center;color:var(--text-dm)">15-25 000 $</td><td style="padding:1rem;text-align:center;font-weight:700;color:var(--accent)">120 000 €</td></tr>
+          <tr style="border-bottom:1px solid var(--border-d);background:var(--bg-section)"><td style="padding:1rem 1.3rem;font-weight:600">BODACC 24 mois</td><td style="padding:1rem;text-align:center;color:var(--text-dm)">⚠ Partiel</td><td style="padding:1rem;text-align:center;color:var(--text-dm)">❌ Non</td><td style="padding:1rem;text-align:center;color:var(--success);font-weight:700">✅ Complet</td></tr>
+          <tr style="border-bottom:1px solid var(--border-d)"><td style="padding:1rem 1.3rem;font-weight:600">Score Détresse 0-100</td><td style="padding:1rem;text-align:center;color:var(--text-dm)">❌ Non</td><td style="padding:1rem;text-align:center;color:var(--text-dm)">❌ Non</td><td style="padding:1rem;text-align:center;color:var(--success);font-weight:700">✅ ARGUS</td></tr>
+          <tr style="border-bottom:1px solid var(--border-d);background:var(--bg-section)"><td style="padding:1rem 1.3rem;font-weight:600">Config. sur vos critères</td><td style="padding:1rem;text-align:center;color:var(--text-dm)">⚠ Dépend</td><td style="padding:1rem;text-align:center;color:var(--text-dm)">❌ Standard</td><td style="padding:1rem;text-align:center;color:var(--success);font-weight:700">✅ Sur mesure</td></tr>
+          <tr style="border-bottom:1px solid var(--border-d)"><td style="padding:1rem 1.3rem;font-weight:600">Méthodologie transférable</td><td style="padding:1rem;text-align:center;color:var(--text-dm)">❌ Interne</td><td style="padding:1rem;text-align:center;color:var(--text-dm)">❌ Fermée</td><td style="padding:1rem;text-align:center;color:var(--success);font-weight:700">✅ Transférée</td></tr>
+          <tr style="border-bottom:1px solid var(--border-d);background:var(--bg-section)"><td style="padding:1rem 1.3rem;font-weight:600">Garantie 90 jours</td><td style="padding:1rem;text-align:center;color:var(--text-dm)">—</td><td style="padding:1rem;text-align:center;color:var(--text-dm)">—</td><td style="padding:1rem;text-align:center;color:var(--success);font-weight:700">✅ Incluse</td></tr>
+          <tr><td style="padding:1rem 1.3rem;font-weight:600">Limité par territoire</td><td style="padding:1rem;text-align:center;color:var(--text-dm)">—</td><td style="padding:1rem;text-align:center;color:var(--text-dm)">❌ Non</td><td style="padding:1rem;text-align:center;color:var(--success);font-weight:700">✅ 2-3 max</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GARANTIE ═══ -->
+<section class="guarantee-section" id="garantie" aria-labelledby="garantie-title">
+  <div class="container" style="max-width:720px">
+    <div class="animate-in">
+      <div class="guarantee-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <h2 id="garantie-title">Garantie 90 jours — sans condition</h2>
+      <p class="lead" style="margin:1.2rem auto 2rem">Si ARGUS ne vous apporte pas un avantage concurrentiel réel dans les 30 premiers jours, <strong>remboursement intégral</strong>. Vous gardez les fiches et la méthodologie.</p>
+      <a href="#formules" class="btn-primary" style="background:#fff;color:#047857">Démarrer — Garantie 90 jours</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CADRE LÉGAL ═══ -->
+<section class="section-blue" id="cadre" aria-labelledby="cadre-title">
+  <div class="container">
+    <div class="section-header animate-in"><h2 id="cadre-title">Un cadre simple. Par conception.</h2></div>
+    <div class="cadre-grid">
+      <div class="cadre-col animate-scale">
+        <h3><span class="icon yes-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></span>Ce que c'est</h3>
+        <ul class="yes-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Logiciel SaaS : analyse automatisée de sources publiques</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Alertes configurées sur vos critères</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Fiches horodatées et traçables</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Forfaits fixes, indépendants de toute transaction</li>
+        </ul>
+      </div>
+      <div class="cadre-col animate-scale">
+        <h3><span class="icon no-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></span>Ce que ce n'est pas</h3>
+        <ul class="no-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>Identification de vendeurs ou d'actifs</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>Mise en relation</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>Négociation ou accompagnement</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>Commission, pourcentage, prime</li>
+        </ul>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:2.5rem;font-size:.85rem;color:var(--text-muted);">Éditeur SaaS B2B — TVA autoliquidée (art. 283-2 CGI). Hors loi Hoguet (n° 70-9 du 2 janvier 1970).</p>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section id="faq" aria-labelledby="faq-title">
+  <div class="container">
+    <div class="section-header animate-in"><h2 id="faq-title">Questions fréquentes</h2></div>
+    <div class="faq-list animate-in">
+      <details class="faq-item"><summary>ARGUS identifie-t-il les biens ou les vendeurs ?</summary><div class="faq-answer">Non. ARGUS livre l'analyse sectorielle et le système d'alertes — pas l'adresse d'un immeuble ni le nom d'un vendeur. L'identification se fait chez vous, sur données publiques, avec les outils qu'ARGUS configure.</div></details>
+      <details class="faq-item"><summary>Pourquoi pas une commission ?</summary><div class="faq-answer">La commission sur transaction immobilière est réglementée par la loi Hoguet (n° 70-9 du 2 janvier 1970). ARGUS est un éditeur SaaS : forfaits fixes pour le logiciel, indépendants de toute transaction. Vous achetez un radar — vous chassez votre gibier.</div></details>
+      <details class="faq-item"><summary>Comment se passe le paiement ?</summary><div class="faq-answer">Virement IBAN EUR (communiqué à la signature). Diagnostic : 50%/50%. Système : annuel ou 4×30 000 €. Partenariat : virement + convention. Facture B2B, TVA autoliquidée (art. 283-2 CGI).</div></details>
+      <details class="faq-item"><summary>Puis-je arrêter ?</summary><div class="faq-answer">Oui. Garantie 90 jours : remboursement intégral. Vous partez avec vos alertes, méthodologie et fiches.</div></details>
+      <details class="faq-item"><summary>Travaillez-vous avec plusieurs opérateurs sur la même zone ?</summary><div class="faq-answer">Diagnostic : oui. ARGUS : 2-3 par département. Partenariat : 2-3 par région.</div></details>
+      <details class="faq-item"><summary>Quelles zones couvrez-vous ?</summary><div class="faq-answer">Île-de-France (93, 94, 75, 92, 95, 91) et extension PACA, Hauts-de-France, et toute région française sur demande.</div></details>
+      <details class="faq-item"><summary>ARGUS est-il un service ou un logiciel ?</summary><div class="faq-answer">Un logiciel. ARGUS scanne automatiquement 6 bases publiques chaque nuit, croise les données, score chaque actif (0-100), et génère les alertes. Vous configurez vos critères — ARGUS fait le reste.</div></details>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section class="section-dark" id="contact" aria-labelledby="contact-title">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info animate-in">
+        <h2 id="contact-title">20 minutes pour voir ARGUS en action.</h2>
+        <p class="lead">Votre département. Vos typologies. Vos seuils. Et le radar démarre.</p>
+        <div class="contact-methods">
+          <a href="https://zcal.co/woudjivictor" class="contact-method" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            <span>Réserver une démo — 20 min</span>
+          </a>
+          <a href="https://wa.me/18573018431?text=Bonjour%2C%20je%20veux%20une%20d%C3%A9mo%20ARGUS" class="contact-method" rel="noopener" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            <span>WhatsApp — réponse sous 4h</span>
+          </a>
+          <a href="mailto:contact@woudjivictor.com" class="contact-method">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+            <span>contact@woudjivictor.com</span>
+          </a>
+        </div>
+      </div>
+      <div class="animate-scale">
+        <form class="contact-form" action="https://formspree.io/f/VOTRE_ID" method="POST" aria-label="Formulaire de contact">
+          <h3>Ou écrivez-moi directement</h3>
+          <div class="form-group"><input type="text" name="nom" placeholder="Nom et prénom" required aria-label="Nom et prénom"></div>
+          <div class="form-group"><input type="email" name="email" placeholder="Email professionnel" required aria-label="Email professionnel"></div>
+          <div class="form-group"><input type="text" name="zone" placeholder="Département ciblé (ex : 93, 06)" aria-label="Département ciblé"></div>
+          <button type="submit" class="btn-primary" style="width:100%">Envoyer — Réponse sous 24h</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer role="contentinfo">
+  <div class="container footer-inner">
+    <div>
+      <p style="margin-bottom:.4rem">© 2026 Woudji Victor — ARGUS • Éditeur de logiciel de veille foncière.</p>
+      <p style="font-size:.72rem;color:var(--text-muted)">SaaS B2B — Hors loi Hoguet. Aucune commission, aucune mise en relation.</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="#argus">ARGUS</a></li>
+      <li><a href="#formules">Tarifs</a></li>
+      <li><a href="https://www.linkedin.com/in/woudji-victor-a9470511a/" target="_blank" rel="noopener">LinkedIn</a></li>
+      <li><a href="mentions-legales.html">Mentions légales</a></li>
+      <li><a href="cgv.html">CGV</a></li>
+      <li><a href="confidentialite.html">Confidentialité</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+(function(){
+'use strict';
+var sections=document.querySelectorAll('section[id]');
+var navLinks=document.querySelectorAll('.nav-links a');
+if('IntersectionObserver' in window&&navLinks.length){
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var id=e.target.id;
+        navLinks.forEach(function(l){
+          var match=l.getAttribute('href')==='#'+id;
+          l.style.color=match?'#fff':'';
+          l.style.fontWeight=match?'600':'500';
+        });
+      }
+    });
+  },{rootMargin:'-40% 0px -60% 0px'});
+  sections.forEach(function(s){obs.observe(s);});
+}
+})();
+</script>
+
+<script>
+(function(){
+'use strict';
+function fmt(n){return n.toLocaleString('fr-FR',{maximumFractionDigits:0})+' €';}
+function calc(){
+  var pa=+document.getElementById('prixAchat').value||0;
+  var t=+document.getElementById('travaux').value||0;
+  var pr=+document.getElementById('prixRevente').value||0;
+  var notaire=pa*0.075;
+  var portage=pa*0.04*1.5;
+  var total=pa+t+notaire+portage;
+  var marge=pr-total;
+  document.getElementById('marge').textContent=fmt(marge);
+  document.getElementById('roiDiag').textContent=marge>0?(marge/25000).toFixed(1)+'x':'—';
+  document.getElementById('roiSys').textContent=marge>0?(marge/120000).toFixed(1)+'x':'—';
+}
+['prixAchat','travaux','prixRevente'].forEach(function(id){
+  var el=document.getElementById(id);
+  if(el)el.addEventListener('input',calc);
+});
+calc();
+})();
+</script>
+</body>
+</html>
