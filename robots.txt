@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://woudjivictor.com/sitemap.xml
+Sitemap: https://www.woudjivictor.com/sitemap.xml
