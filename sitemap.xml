@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://sitemaps.org">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://woudjivictor.com</loc>
-    <lastmod>2026-11-26</lastmod>
+    <loc>https://www.woudjivictor.com/</loc>
+    <lastmod>2026-11-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://woudjivictor.commentions-legales.html</loc>
+    <loc>https://www.woudjivictor.com/mentions-legales.html</loc>
     <lastmod>2026-11-26</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://woudjivictor.comcgv.html</loc>
+    <loc>https://www.woudjivictor.com/cgv.html</loc>
     <lastmod>2026-11-26</lastmod>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://woudjivictor.comconfidentialite.html</loc>
+    <loc>https://www.woudjivictor.com/confidentialite.html</loc>
     <lastmod>2026-11-26</lastmod>
     <priority>0.5</priority>
   </url>
